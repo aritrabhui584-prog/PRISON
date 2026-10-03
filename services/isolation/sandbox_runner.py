@@ -96,18 +96,24 @@ class SandboxRunner:
                     text=True,
                 )
 
+                collected_lines = []
                 # ── Honeypot monitor thread: kills process on first trigger ──
                 def _honeypot_watcher():
                     """Reads stdout line-by-line; kills proc the instant a honeypot key is seen."""
-                    for line in proc.stdout:
-                        triggered, decoy = injector.check_honeypot_trigger(line)
-                        if triggered:
-                            logger.warning(
-                                f"[MANTITUP] EARLY-EXIT: Honeypot '{decoy}' triggered. Killing PID {proc.pid}."
-                            )
-                            kill_event.set()
-                            proc.kill()
-                            return
+                    try:
+                        if proc.stdout:
+                            for line in proc.stdout:
+                                collected_lines.append(line)
+                                triggered, decoy = injector.check_honeypot_trigger(output_text=line)
+                                if triggered:
+                                    logger.warning(
+                                        f"[MANTITUP] EARLY-EXIT: Honeypot '{decoy}' triggered. Killing PID {proc.pid}."
+                                    )
+                                    kill_event.set()
+                                    proc.kill()
+                                    return
+                    except (ValueError, OSError, Exception):
+                        pass
 
                 watcher = threading.Thread(target=_honeypot_watcher, daemon=True)
                 watcher.start()
@@ -143,12 +149,13 @@ class SandboxRunner:
             exec_duration = time.time() - start_time
 
             # Determine final honeypot status
+            full_stdout = "".join(collected_lines) + (stdout or "")
             if kill_event.is_set():
                 triggered, decoy = True, "EARLY_EXIT_HONEYPOT"
                 status = "HONEYPOT_HALTED"
             else:
                 triggered, decoy = injector.check_honeypot_trigger(
-                    output_text=(stdout or "") + (stderr or "")
+                    output_text=full_stdout + (stderr or "")
                 )
                 if triggered:
                     status = "HONEYPOT_HALTED"
@@ -157,7 +164,7 @@ class SandboxRunner:
                 sandbox_id=request.sandbox_id,
                 status=status,
                 exit_code=exit_code,
-                stdout=stdout or "",
+                stdout=full_stdout,
                 stderr=stderr or "",
                 execution_time=exec_duration,
                 honeypot_triggered=triggered,
