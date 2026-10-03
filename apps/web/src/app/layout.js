@@ -86,8 +86,8 @@ export default function RootLayout({ children }) {
           }}
         />
       </head>
-      <body className={`${inter.variable} ${jetbrainsMono.variable} font-sans bg-[#090D16] text-slate-100 antialiased`}>
-        <ClerkProvider>
+      <body className={`${inter.variable} ${jetbrainsMono.variable} font-sans bg-[#090D16] text-slate-100 antialiased overflow-x-hidden w-full overflow-y-auto`}>
+        <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || 'pk_test_Y2xlcmsuZXhhbXBsZS5jb20k'}>
           <Navbar />
           {children}
           <ToastContainer />

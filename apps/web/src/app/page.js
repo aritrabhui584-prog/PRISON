@@ -1,7 +1,6 @@
 'use client';
 import Link from 'next/link';
 import ToastContainer from '@/components/Toast';
-import AsciiArtCanvas from '@/components/AsciiArtCanvas';
 import TechText from '@/components/TechText';
 import ShapeGrid from '@/components/ShapeGrid';
 
@@ -130,13 +129,18 @@ export default function LandingPage() {
     }
 
     /* Override globals.css background for this page */
+    html {
+      background-color: #06070a !important;
+    }
     body {
       background-color: #06070a !important;
+      overflow-x: hidden !important;
+      overflow-y: auto !important;
     }
         `
       }} />
 
-      <div className="bg-retroBg text-slate-200 font-pixel selection:bg-pixelCyan selection:text-black overflow-x-hidden antialiased min-h-screen relative z-0">
+      <div className="bg-retroBg text-slate-200 font-pixel selection:bg-pixelCyan selection:text-black overflow-x-hidden w-full antialiased min-h-screen relative z-0">
         <ToastContainer />
         <ShapeGrid 
           speed={0.15} 
@@ -203,7 +207,7 @@ export default function LandingPage() {
                   </Link>
                 </div>
                 <div className="w-full flex-1 min-h-[350px] lg:min-h-[420px] mt-2">
-                  <AsciiArtCanvas className="w-full h-full min-h-[350px] lg:min-h-[420px]" />
+                  <video src="/flower.mp4" autoPlay loop muted playsInline aria-hidden="true" className="flower-animation" />
                 </div>
               </div>
               <div className="lg:col-span-6 w-full">

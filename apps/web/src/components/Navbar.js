@@ -1,8 +1,8 @@
 'use client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { SignInButton, SignUpButton, Show, UserButton } from '@clerk/nextjs';
-export default function Navbar() {
+import { SignInButton, SignUpButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
+export default function Navbar({ authEnabled = false }) {
   const pathname = usePathname();
 
   const getLinkClasses = (path) => {
@@ -28,7 +28,7 @@ export default function Navbar() {
             <span className="font-arcade text-white text-xl tracking-widest flex items-center gap-1 group-hover:text-[#a5b4fc] transition-colors">
               PRISON
             </span>
-            <span className="font-silk text-[10px] text-[#a5b4fc] tracking-widest font-semibold uppercase mt-0.5">
+            <span className="font-mono text-[10px] text-[#a5b4fc] tracking-widest font-bold uppercase mt-0.5">
               SECURITY NETWORK
             </span>
           </div>
@@ -57,24 +57,32 @@ export default function Navbar() {
             <span className="text-slate-300">All Systems Online</span>
           </div>
           
-          <Show when="signed-out">
-            <div className="flex items-center gap-3">
-              <SignInButton mode="modal">
-                <button className="font-arcade text-xs text-slate-300 hover:text-white transition-colors">LOGIN</button>
-              </SignInButton>
-              <SignUpButton mode="modal">
-                <button className="pixel-btn bg-[#6366f1] text-white font-arcade text-xs px-4 py-2 border-2 border-black shadow-[3px_3px_0px_#312e81] hover:bg-[#4f46e5] transition-all">SIGN UP</button>
-              </SignUpButton>
-            </div>
-          </Show>
-          
-          <Show when="signed-in">
+          {authEnabled ? (
+            <>
+              <SignedOut>
+                <div className="flex items-center gap-3">
+                  <SignInButton mode="modal">
+                    <button className="font-arcade text-xs text-slate-300 hover:text-white transition-colors">LOGIN</button>
+                  </SignInButton>
+                  <SignUpButton mode="modal">
+                    <button className="pixel-btn bg-[#6366f1] text-white font-arcade text-xs px-4 py-2 border-2 border-black shadow-[3px_3px_0px_#312e81] hover:bg-[#4f46e5] transition-all">SIGN UP</button>
+                  </SignUpButton>
+                </div>
+              </SignedOut>
+              <SignedIn>
+                <Link href="/sandbox" className="pixel-btn bg-[#6366f1] text-white font-arcade text-xs sm:text-sm px-6 py-3 sm:px-8 sm:py-4 border-2 border-black shadow-[4px_4px_0px_#312e81] hover:bg-[#4f46e5] transition-all flex items-center gap-2.5">
+                  <span className="text-[#fde047] font-bold text-base">⚡</span>
+                  <span className="">DETONATE PR</span>
+                </Link>
+                <UserButton appearance={{ elements: { userButtonAvatarBox: "w-10 h-10 border-2 border-[#6366f1] rounded-none shadow-[2px_2px_0px_#000]" } }} />
+              </SignedIn>
+            </>
+          ) : (
             <Link href="/sandbox" className="pixel-btn bg-[#6366f1] text-white font-arcade text-xs sm:text-sm px-6 py-3 sm:px-8 sm:py-4 border-2 border-black shadow-[4px_4px_0px_#312e81] hover:bg-[#4f46e5] transition-all flex items-center gap-2.5">
               <span className="text-[#fde047] font-bold text-base">⚡</span>
               <span className="">DETONATE PR</span>
             </Link>
-            <UserButton appearance={{ elements: { userButtonAvatarBox: "w-10 h-10 border-2 border-[#6366f1] rounded-none shadow-[2px_2px_0px_#000]" } }} />
-          </Show>
+          )}
         </div>
         
       </div>

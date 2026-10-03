@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import { useEffect } from 'react';
 import ToastContainer from '@/components/Toast';
+import ShapeGrid from '@/components/ShapeGrid';
 
 export default function DocsPage() {
   useEffect(() => {
@@ -25,11 +26,6 @@ export default function DocsPage() {
 
   return (
     <>
-      
-      
-      
-      
-      
       <script
         dangerouslySetInnerHTML={{
           __html: `
@@ -51,7 +47,8 @@ export default function DocsPage() {
                     }
                   },
                   fontFamily: {
-                    pixel: ['"Press Start 2P"', 'monospace'],
+                    arcade: ['"Press Start 2P"', 'monospace'],
+                    pixel: ['"Silkscreen"', 'monospace'],
                     silk: ['"Silkscreen"', 'monospace'],
                     vt: ['"VT323"', 'monospace'],
                     code: ['"Courier Prime"', 'monospace']
@@ -71,9 +68,36 @@ export default function DocsPage() {
       
       <style dangerouslySetInnerHTML={{
         __html: `
+    /* Scanline screen texture */
+    body::before {
+      content: " ";
+      display: block;
+      position: fixed;
+      top: 0; left: 0; bottom: 0; right: 0;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.4) 50%), 
+                  linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+      z-index: 999;
+      background-size: 100% 3px, 6px 100%;
+      pointer-events: none;
+      opacity: 0.75;
+    }
+
     body {
       background-color: #060814 !important;
       color: #cbd5e1;
+      overflow-x: hidden !important;
+      overflow-y: auto !important;
+    }
+
+    /* Marquee ticker animation */
+    @keyframes marqueeScroll {
+      0% { transform: translateX(0%); }
+      100% { transform: translateX(-50%); }
+    }
+    .animate-marquee {
+      display: inline-flex;
+      white-space: nowrap;
+      animation: marqueeScroll 25s linear infinite;
     }
 
     .pixel-box {
@@ -99,20 +123,6 @@ export default function DocsPage() {
       box-shadow: 1px 1px 0px #000;
     }
 
-    .scanlines {
-      background: linear-gradient(
-        rgba(18, 16, 16, 0) 50%, 
-        rgba(0, 0, 0, 0.25) 50%
-      ), linear-gradient(
-        90deg,
-        rgba(255, 0, 0, 0.03),
-        rgba(0, 255, 0, 0.01),
-        rgba(0, 0, 255, 0.03)
-      );
-      background-size: 100% 4px, 6px 100%;
-      pointer-events: none;
-    }
-
     ::-webkit-scrollbar {
       width: 8px;
       height: 8px;
@@ -131,9 +141,32 @@ export default function DocsPage() {
         `
       }} />
 
-      <div className="bg-retro-bg text-slate-300 font-code min-h-screen selection:bg-indigo-600 selection:text-white relative z-0">
+      <div className="bg-[#060814] text-slate-100 font-pixel antialiased selection:bg-[#6366f1] selection:text-white min-h-screen relative z-0">
         <ToastContainer />
-        <div className="fixed inset-0 scanlines pointer-events-none z-50"></div>
+        <ShapeGrid 
+          speed={0.15} 
+          squareSize={40}
+          direction='diagonal'
+          borderColor='#fff'
+          hoverFillColor='#222'
+          shape='square'
+          hoverTrailAmount={5}
+        />
+
+        <div className="w-full bg-[#6366f1] border-y-2 border-black overflow-hidden py-2 relative z-10" data-purpose="status-marquee-strip">
+          <div className="animate-marquee flex items-center text-white font-arcade text-[10px] tracking-wider uppercase">
+            <span className="mx-3">◆ PRISON DOCUMENTATION</span>
+            <span className="mx-3">◆ ARCHITECTURE SPECIFICATION</span>
+            <span className="mx-3">◆ FIRECRACKER MICROVM</span>
+            <span className="mx-3">◆ EBPF OBSERVATION</span>
+            <span className="mx-3">◆ ANAKIN AI REPAIR</span>
+            <span className="mx-3">◆ PRISON DOCUMENTATION</span>
+            <span className="mx-3">◆ ARCHITECTURE SPECIFICATION</span>
+            <span className="mx-3">◆ FIRECRACKER MICROVM</span>
+            <span className="mx-3">◆ EBPF OBSERVATION</span>
+            <span className="mx-3">◆ ANAKIN AI REPAIR</span>
+          </div>
+        </div>
         
         
 

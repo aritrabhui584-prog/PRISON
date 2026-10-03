@@ -1,19 +1,12 @@
-<div align="center">
-
 # PRISON
 
-### Pull Request Isolation &amp; Security Observation Network
+## Pull Request Isolation & Security Observation Network
 
 **A runtime security platform for inspecting untrusted pull requests in isolated environments.**
 
-![Status: Prototype](https://img.shields.io/badge/status-prototype-6366f1?style=for-the-badge)
-![Next.js 14](https://img.shields.io/badge/Next.js-14-111111?style=for-the-badge&logo=nextdotjs)
-![Python](https://img.shields.io/badge/Python-services-3776ab?style=for-the-badge&logo=python&logoColor=white)
-![Linux and KVM](https://img.shields.io/badge/runtime-Linux%20%7C%20KVM-fcc624?style=for-the-badge&logo=linux&logoColor=black)
+![Status: Prototype](https://img.shields.io/badge/status-prototype-6366f1?style=for-the-badge) ![Next.js 14](https://img.shields.io/badge/Next.js-14-111111?style=for-the-badge&logo=nextdotjs) ![Python](https://img.shields.io/badge/Python-services-3776ab?style=for-the-badge&logo=python&logoColor=white) ![Linux and KVM](https://img.shields.io/badge/runtime-Linux%20%7C%20KVM-fcc624?style=for-the-badge&logo=linux&logoColor=black)
 
 [Problem](#the-problem) · [How it works](#how-it-works) · [Architecture](#architecture) · [Quickstart](#quickstart) · [Technology stack](#technology-stack) · [Security notes](#security-notes)
-
-</div>
 
 ---
 
@@ -83,7 +76,7 @@ The values above illustrate the dashboard workflow; they are not a guarantee of 
 
 ## Quickstart
 
-### Dashboard only
+### Dashboard Only
 
 Requirements: Node.js 20 or later and npm.
 
@@ -96,7 +89,7 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000). The dashboard can run by itself; API-backed workflows require the backend services to be available.
 
-### Full local stack
+### Full Local Stack
 
 Requirements: Docker Compose. Linux with KVM access is required for Firecracker-backed execution. Docker Desktop and other non-Linux environments may not expose `/dev/kvm`.
 
